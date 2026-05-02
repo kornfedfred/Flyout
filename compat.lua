@@ -1,7 +1,8 @@
-local _G = getfenv(0)
+local _G = _G
 
 -- upvalues
 local IsAddOnLoaded = IsAddOnLoaded
+local ActionButton_CalculateAction = ActionButton_CalculateAction
 
 -- ElvUI
 -- ElvUI uses LibActionButton-1.0; buttons are named ElvUI_Bar1Button1..ElvUI_Bar6Button12.
@@ -9,7 +10,7 @@ local IsAddOnLoaded = IsAddOnLoaded
 local ELVUI_BARS = { 'ElvUI_Bar1', 'ElvUI_Bar2', 'ElvUI_Bar3', 'ElvUI_Bar4', 'ElvUI_Bar5', 'ElvUI_Bar6' }
 
 local function GetActionButton_ElvUI(action)
-    for b = 1, table.getn(ELVUI_BARS) do
+    for b = 1, #ELVUI_BARS do
         for i = 1, 12 do
             local button = _G[ELVUI_BARS[b] .. 'Button' .. i]
             if button then
@@ -44,7 +45,7 @@ local PF_BARS = {
 }
 
 local function GetActionButton_PF(action)
-    for i = 1, table.getn(PF_BARS) do
+    for i = 1, #PF_BARS do
         local bar = PF_BARS[i]
         local nextFirst = PF_BARS[i + 1] and PF_BARS[i + 1].first or 121
         if action >= bar.first and action < nextFirst then
@@ -97,7 +98,7 @@ local function GetActionButton_Dragonflight3(action)
 end
 
 
-local function HandleEvent(self, event, arg1)
+local function Flyout_HandleCompatEvent(self, event, arg1)
     -- Check on both VARIABLES_LOADED and ADDON_LOADED so we catch
     -- action-bar replacements regardless of load order.
 
@@ -107,15 +108,15 @@ local function HandleEvent(self, event, arg1)
     end
 
     if IsAddOnLoaded('Bongos') and IsAddOnLoaded('Bongos_ActionBar') then
-        Flyout_GetActionButton = GetActionButton_Bongos
+        Flyout_GetActionButton_Custom = GetActionButton_Bongos
     end
 
     if IsAddOnLoaded('pfUI') then
-        Flyout_GetActionButton = GetActionButton_PF
+        Flyout_GetActionButton_Custom = GetActionButton_PF
     end
 
     if IsAddOnLoaded('-Dragonflight3') then
-        Flyout_GetActionButton = GetActionButton_Dragonflight3
+        Flyout_GetActionButton_Custom = GetActionButton_Dragonflight3
     end
 end
 
@@ -123,4 +124,4 @@ end
 local handler = CreateFrame('Frame')
 handler:RegisterEvent('VARIABLES_LOADED')
 handler:RegisterEvent('ADDON_LOADED')
-handler:SetScript('OnEvent', HandleEvent)
+handler:SetScript('OnEvent', Flyout_HandleCompatEvent)

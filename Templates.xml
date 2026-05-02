@@ -73,15 +73,12 @@
 
                 self:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
             </OnLoad>
-            <OnUpdate>
-                FlyoutBarButton_OnUpdate(self, elapsed)
-            </OnUpdate>
             <OnEnter>
                 GameTooltip_SetDefaultAnchor(GameTooltip, self)
                 if self.flyoutActionType == 0 then
                     GameTooltip:SetSpell(self.flyoutAction, 'spell')
                 elseif self.flyoutActionType == 2 then
-                    GameTooltip:SetBagItem(GetBagPosition(self.flyoutAction))
+                    GameTooltip:SetBagItem(Flyout_GetBagPosition(self.flyoutAction))
                 elseif self.flyoutActionType == 1 then
                     GameTooltip:SetText(GetMacroInfo(self.flyoutAction), 1, 1, 1)
                 end

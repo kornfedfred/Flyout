@@ -1,4 +1,5 @@
 -- upvalues
+local _G = _G
 local strgfind = string.gmatch
 
 local function ShowColorPicker(r, g, b, callback)
