@@ -1,5 +1,5 @@
 -- upvalues
-local strgfind = string.gfind
+local strgfind = string.gmatch
 
 local function ShowColorPicker(r, g, b, callback)
    ColorPickerFrame:SetColorRGB(r, g, b)

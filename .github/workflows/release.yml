@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '3.3.5-*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build addon zip
+        run: |
+          mkdir -p Flyout
+          cp -r Flyout.toc main.lua options.lua compat.lua Templates.xml assets README.md Flyout/
+          zip -r Flyout-${{ github.ref_name }}.zip Flyout/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Flyout-${{ github.ref_name }}.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
