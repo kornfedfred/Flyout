@@ -60,11 +60,18 @@ You can add modifiers inside the `/flyout` line:
 | `[direction:DIRECTION]` | Force flyout to expand in a specific direction (`up`, `down`, `left`, `right`), overriding auto-detection |
 | `[icon]` | Use the default action's icon for the flyout button on the action bar |
 | `[sticky]` | Keep the flyout open after using an action |
+| `[lock]` | Keep the `/flyout` list order fixed when right-clicking to swap the default — only `/cast` is updated |
 
 Example with modifiers:
 ```
 /cast Shadow Bolt
 /flyout [direction:right][icon] Shadow Bolt; Immolate; Corruption
+```
+
+Use `[lock]` if you want right-click swaps to update the default cast without rearranging the flyout order:
+```
+/cast Flash Heal
+/flyout [direction:up][lock] Flash Heal; Greater Heal; Renew; Prayer of Mending
 ```
 
 ## Class Examples (WotLK 3.3.5a)
@@ -106,7 +113,7 @@ Example with modifiers:
 **Summon Demon** — Quick pet swap.
 ```
 /cast Summon Imp
-/flyout [direction:up][icon] Summon Imp; Summon Voidwalker; Summon Succubus; Summon Felhunter; Summon Felguard
+/flyout [direction:up][icon][lock] Summon Imp; Summon Voidwalker; Summon Succubus; Summon Felhunter; Summon Felguard
 ```
 
 **Soul Stones** — Create soulstone and healthstone.
@@ -120,7 +127,7 @@ Example with modifiers:
 **Aspects** — Swap hunter aspects on the fly.
 ```
 /cast Aspect of the Hawk
-/flyout [direction:up][icon] Aspect of the Hawk; Aspect of the Dragonhawk; Aspect of the Cheetah; Aspect of the Pack; Aspect of the Viper; Aspect of the Wild; Aspect of the Beast
+/flyout [direction:up][icon][lock] Aspect of the Hawk; Aspect of the Dragonhawk; Aspect of the Cheetah; Aspect of the Pack; Aspect of the Viper; Aspect of the Wild; Aspect of the Beast
 ```
 
 **Tracking** — Toggle tracking by creature type.
@@ -137,10 +144,10 @@ Example with modifiers:
 /flyout [direction:up][icon] Power Word: Fortitude; Prayer of Fortitude; Divine Spirit; Prayer of Spirit; Shadow Protection; Prayer of Shadow Protection; Fear Ward
 ```
 
-**Healing** — Primary heals (right-click to set default).
+**Healing** — Primary heals (right-click to set default; `[lock]` keeps the heal order fixed).
 ```
 /cast Flash Heal
-/flyout [direction:up][icon] Flash Heal; Greater Heal; Renew; Prayer of Mending; Binding Heal; Circle of Healing
+/flyout [direction:up][icon][lock] Flash Heal; Greater Heal; Renew; Prayer of Mending; Binding Heal; Circle of Healing
 ```
 
 ### Druid
@@ -148,7 +155,7 @@ Example with modifiers:
 **Forms** — All shapeshift forms.
 ```
 /cast Bear Form
-/flyout [direction:up][icon] Bear Form; Dire Bear Form; Cat Form; Travel Form; Aquatic Form; Flight Form; Swift Flight Form; Moonkin Form; Tree of Life
+/flyout [direction:up][icon][lock] Bear Form; Dire Bear Form; Cat Form; Travel Form; Aquatic Form; Flight Form; Swift Flight Form; Moonkin Form; Tree of Life
 ```
 
 **Buffs** — Mark and Thorns.
@@ -162,13 +169,13 @@ Example with modifiers:
 **Totems — Earth** — Earth totems in one menu.
 ```
 /cast Strength of Earth Totem
-/flyout [direction:up][icon] Strength of Earth Totem; Stoneskin Totem; Earthbind Totem; Stoneclaw Totem; Tremor Totem
+/flyout [direction:up][icon][lock] Strength of Earth Totem; Stoneskin Totem; Earthbind Totem; Stoneclaw Totem; Tremor Totem
 ```
 
 **Totems — Fire** — Fire totems in one menu.
 ```
 /cast Searing Totem
-/flyout [direction:up][icon] Searing Totem; Flametongue Totem; Frost Resistance Totem; Magma Totem; Fire Elemental Totem; Totem of Wrath
+/flyout [direction:up][icon][lock] Searing Totem; Flametongue Totem; Frost Resistance Totem; Magma Totem; Fire Elemental Totem; Totem of Wrath
 ```
 
 **Shields** — Swap between shields.
@@ -182,7 +189,7 @@ Example with modifiers:
 **Auras** — Switch auras quickly.
 ```
 /cast Devotion Aura
-/flyout [direction:up][icon] Devotion Aura; Retribution Aura; Concentration Aura; Shadow Resistance Aura; Frost Resistance Aura; Fire Resistance Aura; Crusader Aura
+/flyout [direction:up][icon][lock] Devotion Aura; Retribution Aura; Concentration Aura; Shadow Resistance Aura; Frost Resistance Aura; Fire Resistance Aura; Crusader Aura
 ```
 
 **Blessings** — Single-target blessings.
@@ -196,7 +203,7 @@ Example with modifiers:
 **Stances** — Battle, Defensive, Berserker.
 ```
 /cast Battle Stance
-/flyout [direction:up][icon] Battle Stance; Defensive Stance; Berserker Stance
+/flyout [direction:up][icon][lock] Battle Stance; Defensive Stance; Berserker Stance
 ```
 
 **Shouts** — Buff shouts.
@@ -224,7 +231,7 @@ Example with modifiers:
 **Presences** — Blood, Frost, Unholy.
 ```
 /cast Blood Presence
-/flyout [direction:up][icon] Blood Presence; Frost Presence; Unholy Presence
+/flyout [direction:up][icon][lock] Blood Presence; Frost Presence; Unholy Presence
 ```
 
 **Paths** — Path of Frost.

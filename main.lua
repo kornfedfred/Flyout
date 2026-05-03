@@ -261,15 +261,21 @@ local function UpdateBarButton(slot)
             flyoutBody = strgsub(flyoutBody, '%[icon%]', '')
          end
 
-         -- Identify direction override.
-         local _, _, dirValue = strfind(flyoutBody, '%[direction:(%a+)%]')
-         if dirValue then
-            flyoutBody = strgsub(flyoutBody, '%[direction:%a+%]', '')
-            local dirMap = { up = 'TOP', down = 'BOTTOM', left = 'LEFT', right = 'RIGHT' }
-            button.flyoutDirection = dirMap[strlower(dirValue)]
-         end
+          -- Identify direction override.
+          local _, _, dirValue = strfind(flyoutBody, '%[direction:(%a+)%]')
+          if dirValue then
+             flyoutBody = strgsub(flyoutBody, '%[direction:%a+%]', '')
+             local dirMap = { up = 'TOP', down = 'BOTTOM', left = 'LEFT', right = 'RIGHT' }
+             button.flyoutDirection = dirMap[strlower(dirValue)]
+          end
 
-         flyoutBody = strsub(flyoutBody, flyoutEnd + 1)
+          -- Identify lock order (prevent re-ordering on right-click default swap).
+          if strfind(flyoutBody, '%[lock%]') then
+             flyoutBody = strgsub(flyoutBody, '%[lock%]', '')
+             button.lockOrder = true
+          end
+
+          flyoutBody = strsub(flyoutBody, flyoutEnd + 1)
 
          if not button.flyoutActions then
             button.flyoutActions = {}
@@ -394,15 +400,17 @@ handler:RegisterEvent('LEARNED_SPELL_IN_TAB')
 handler:SetScript('OnEvent', Flyout_HandleCoreEvent)
 
 -- globals
-local function SwapMacroDefault(body, oldAction, newAction)
+local function SwapMacroDefault(body, oldAction, newAction, lockOrder)
    local lines = {}
    for rawLine in string.gmatch(body .. '\n', '([^\n]*)\n') do
       local line = rawLine
       if strfind(line, '/flyout') then
-         local as, ae = string.find(line, oldAction, 1, true)
-         local bs, be = string.find(line, newAction, 1, true)
-         if as and bs then
-            line = string.sub(line, 1, as - 1) .. newAction .. string.sub(line, ae + 1, bs - 1) .. oldAction .. string.sub(line, be + 1)
+         if not lockOrder then
+            local as, ae = string.find(line, oldAction, 1, true)
+            local bs, be = string.find(line, newAction, 1, true)
+            if as and bs then
+               line = string.sub(line, 1, as - 1) .. newAction .. string.sub(line, ae + 1, bs - 1) .. oldAction .. string.sub(line, be + 1)
+            end
          end
       elseif strfind(line, '/cast%s+') then
          -- Update /cast line to match the new default action.
@@ -437,8 +445,8 @@ function Flyout_OnClick(button, mouseButton)
          if not macroIndex or macroIndex == 0 then return end
          local _, icon, body, isLocal = GetMacroInfo(macroIndex)
 
-         local newBody = SwapMacroDefault(body, oldAction, newAction)
-         if newBody ~= body then
+          local newBody = SwapMacroDefault(body, oldAction, newAction, parent.lockOrder)
+          if newBody ~= body then
             EditMacro(macroIndex, macro, icon, newBody, isLocal)
             Flyout_Show(parent)
          end
