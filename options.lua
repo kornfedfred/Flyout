@@ -209,7 +209,8 @@ SlashCmdList["FLYOUT"] = function(msg)
             Flyout.UpdateBars()
         end
     else
-        DEFAULT_CHAT_FRAME:AddMessage(PREFIX .. "Usage: /flyout [size|color|arrow] [value|reset]")
-        DEFAULT_CHAT_FRAME:AddMessage(PREFIX .. "Or /flyout with no args to open the options panel.")
+        -- Silently ignore unrecognized arguments.  This prevents flyout
+        -- action lists (e.g. "/flyout Spell1; Spell2") from spamming chat
+        -- when the macro is executed by left-clicking the action bar button.
     end
 end

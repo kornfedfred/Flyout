@@ -2,7 +2,7 @@
 ## Title: Flyout |cff808080by lookino|r|cff9B30FFkff|r
 ## Author: lookino
 ## Notes: Allows the player to create a flyout action bar button.
-## Version: 1.4
+## Version: 1.5
 ## SavedVariablesPerCharacter: Flyout_Config
 ## OptionalDeps: ElvUI, Bongos, Bongos_ActionBar, pfUI, -Dragonflight3, Bartender4
 
