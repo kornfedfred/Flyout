@@ -4,7 +4,7 @@
 ## Notes: Allows the player to create a flyout action bar button.
 ## Version: 1.2.0
 ## SavedVariablesPerCharacter: Flyout_Config
-## OptionalDeps:
+## OptionalDeps: ElvUI, Bongos, Bongos_ActionBar, pfUI, -Dragonflight3, Bartender4
 
 Templates.xml
 

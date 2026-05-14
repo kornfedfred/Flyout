@@ -78,7 +78,7 @@
                 if self.flyoutActionType == 0 then
                     GameTooltip:SetSpell(self.flyoutAction, 'spell')
                 elseif self.flyoutActionType == 2 then
-                    GameTooltip:SetBagItem(Flyout_GetBagPosition(self.flyoutAction))
+                    GameTooltip:SetBagItem(_G.Flyout.GetBagPosition(self.flyoutAction))
                 elseif self.flyoutActionType == 1 then
                     GameTooltip:SetText(GetMacroInfo(self.flyoutAction), 1, 1, 1)
                 end
@@ -89,7 +89,7 @@
 
                 local focus = GetMouseFocus()
                 if focus and not strfind(focus:GetName() or '', 'Flyout') then
-                    Flyout_Hide()
+                    _G.Flyout.Hide()
                 end
             </OnLeave>
         </Scripts>
