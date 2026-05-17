@@ -389,6 +389,12 @@ local function Flyout_HandleCoreEvent(self, event, arg1, arg2, arg3, arg4, arg5)
         Flyout.Hide()
         Flyout.UpdateBars()
         return
+    elseif event == "PLAYER_REGEN_DISABLED" then
+        -- Close flyouts immediately when entering combat, before the engine
+        -- applies secure frame lockdown. InCombatLockdown() is typically still
+        -- false during this event handler, so Hide() works on secure frames.
+        HideFlyoutButtons()
+        return
     end
 end
 
@@ -402,6 +408,7 @@ handler:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 handler:RegisterEvent("UPDATE_MACROS")
 handler:RegisterEvent("SPELLS_CHANGED")
 handler:RegisterEvent("LEARNED_SPELL_IN_TAB")
+handler:RegisterEvent("PLAYER_REGEN_DISABLED")
 handler:SetScript("OnEvent", Flyout_HandleCoreEvent)
 
 -- globals
@@ -489,10 +496,7 @@ local function IsCurrentCast(spellIndex, bookType)
     return false
 end
 
-function Flyout.Hide(keepOpenIfSticky)
-    if InCombatLockdown() then
-        return
-    end
+local function HideFlyoutButtons(keepOpenIfSticky)
     local i = 1
     local button = _G["FlyoutButton" .. i]
     while button do
@@ -524,6 +528,13 @@ function Flyout.Hide(keepOpenIfSticky)
             b:SetScript("OnUpdate", nil)
         end
     end
+end
+
+function Flyout.Hide(keepOpenIfSticky)
+    if InCombatLockdown() then
+        return
+    end
+    HideFlyoutButtons(keepOpenIfSticky)
 end
 
 -- Reusable variables for FlyoutBarButton_UpdateCooldown().
