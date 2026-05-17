@@ -393,7 +393,7 @@ local function Flyout_HandleCoreEvent(self, event, arg1, arg2, arg3, arg4, arg5)
         -- Close flyouts immediately when entering combat, before the engine
         -- applies secure frame lockdown. InCombatLockdown() is typically still
         -- false during this event handler, so Hide() works on secure frames.
-        HideFlyoutButtons()
+        Flyout.HideFlyoutButtons()
         return
     end
 end
@@ -496,7 +496,7 @@ local function IsCurrentCast(spellIndex, bookType)
     return false
 end
 
-local function HideFlyoutButtons(keepOpenIfSticky)
+function Flyout.HideFlyoutButtons(keepOpenIfSticky)
     local i = 1
     local button = _G["FlyoutButton" .. i]
     while button do
@@ -534,7 +534,7 @@ function Flyout.Hide(keepOpenIfSticky)
     if InCombatLockdown() then
         return
     end
-    HideFlyoutButtons(keepOpenIfSticky)
+    Flyout.HideFlyoutButtons(keepOpenIfSticky)
 end
 
 -- Reusable variables for FlyoutBarButton_UpdateCooldown().
