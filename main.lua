@@ -114,18 +114,18 @@ local function InvalidateSpellSlotCache()
 end
 
 local function GetSpellSlotByName(name)
-    local cached = spellSlotCache[name]
+    local lookupKey = strlower(name)
+    local cached = spellSlotCache[lookupKey]
     if cached then
         return cached
     end
 
     local count, offset, spell, subSpell
 
-    local lowerName = strlower(name)
-    name = lowerName
-    local b, _, rank = strfind(name, "%(%s*rank%s+(%d+)%s*%)")
+    local searchName = lookupKey
+    local b, _, rank = strfind(searchName, "%(%s*rank%s+(%d+)%s*%)")
     if b then
-        name = (b > 1) and strtrim(strsub(name, 1, b - 1)) or ""
+        searchName = (b > 1) and strtrim(strsub(searchName, 1, b - 1)) or ""
     end
 
     for tabIndex = GetNumSpellTabs(), 1, -1 do
@@ -133,8 +133,8 @@ local function GetSpellSlotByName(name)
         for index = offset + count, offset + 1, -1 do
             spell, subSpell = GetSpellName(index, "spell")
             spell = strlower(spell)
-            if name == spell and (not rank or subSpell == "Rank " .. rank) then
-                spellSlotCache[name] = index
+            if searchName == spell and (not rank or subSpell == "Rank " .. rank) then
+                spellSlotCache[lookupKey] = index
                 return index
             end
         end
@@ -643,7 +643,10 @@ function Flyout.Show(button)
 
             -- Configure secure attributes so the button casts via Blizzard's secure handler.
             if b.flyoutActionType == ACTION_TYPE_SPELL then
-                local spellName = GetSpellName(b.flyoutAction, "spell")
+                local spellName, spellRank = GetSpellName(b.flyoutAction, "spell")
+                if spellRank and spellRank ~= "" then
+                    spellName = spellName .. "(" .. spellRank .. ")"
+                end
                 b:SetAttribute("type1", "spell")
                 b:SetAttribute("spell1", spellName)
                 b:SetAttribute("type2", "")
